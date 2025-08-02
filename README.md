@@ -1,3 +1,11 @@
+<img width="1029" height="579" alt="image" src="https://github.com/user-attachments/assets/eaa00706-de37-479a-bca9-c6da90893534" />
+<img width="1029" height="579" alt="image" src="https://github.com/user-attachments/assets/c88d8c1b-3650-4c80-a585-57c71513375c" />
+<img width="1029" height="579" alt="image" src="https://github.com/user-attachments/assets/fe915be5-9353-4507-95cd-8a4ca67e3c7b" />
+
+
+
+
+
 # 🪙 Zpay Setup Guide
 
 > **Privacy-focused cryptocurrency Receipt System using Zephyr Protocol**
