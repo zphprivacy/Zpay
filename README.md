@@ -210,7 +210,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE  Version 3,- see t
 
 <div align="center">
 
-**Made with ❤️ by zpyprivacy**
+**Made with ❤️ by zphprivacy**
 
 ⭐ Star this repo if it helped you!
 
