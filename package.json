@@ -1,0 +1,46 @@
+{
+  "name": "Zpay",
+  "version": "1.0.0",
+  "description": "Zpay Receipt System",
+  "author": "Cookie",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.3.1",
+    "nodemailer": "^6.9.8"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.zpay.app",
+    "productName": "Zpay",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/electron/**/*",
+      "!dist/**/*",
+      "!AppDir/**/*",
+      "!*.AppImage",
+      "!create-appimage.sh",
+      "!install-zpay.sh"
+    ],
+    "linux": {
+      "target": {
+        "target": "dir",
+        "arch": [
+          "x64"
+        ]
+      },
+      "icon": "icon.png",
+      "category": "Office"
+    }
+  }
+}
+

@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Receipt</title>
+  <style>
+    body {
+      background-color: #001f3f;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2em;
+      color: #7FDBFF;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    #backBtn {
+      align-self: flex-start;
+      margin: 10px;
+      background-color: #0074D9;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #backBtn:hover {
+      background-color: #3399FF;
+    }
+
+    form {
+      background-color: #003366;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 700px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    #txInfo {
+      margin-bottom: 15px;
+      font-size: 1.1em;
+      line-height: 1.5;
+      white-space: pre-line; 
+      word-break: break-word; 
+      background-color: #002244;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #7FDBFF;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      background-color: #002244;
+      color: white;
+      border: 1px solid #7FDBFF;
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #39CCCC;
+      box-shadow: 0 0 5px rgba(127, 219, 255, 0.3);
+    }
+
+    button[type="submit"] {
+      margin-top: 15px;
+      background-color: #0074D9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #3399FF;
+    }
+
+    .loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <button id="backBtn">← Back</button>
+  <div class="title">Ƶpay</div>
+  <h1>Generate Receipt</h1>
+  
+  <form id="receiptForm">
+    <div id="txInfo"></div>
+    
+    <label>
+      Note:
+      <input type="text" id="note" placeholder="Add a note for this transaction (optional)">
+    </label>
+    
+    <label>
+      Email:
+      <input type="email" id="email" placeholder="Enter recipient email address" required>
+    </label>
+    
+    <button type="submit" id="submitBtn">Send Receipt</button>
+  </form>
+
+  <script>
+    const tx = JSON.parse(sessionStorage.getItem('selectedTx'));
+
+    if (!tx) {
+      alert('No transaction selected');
+      window.location.href = 'index.html';
+    }
+
+
+    let asset = 'ZSD';
+    if (tx.asset) {
+      asset = tx.asset.toUpperCase();
+    } else if (Math.abs(tx.amount) < 1e9) {
+      asset = 'ZEPH';
+    }
+
+
+    const formattedAmount = (tx.amount / 1e12).toFixed(6);
+    const txInfoText = `TXID: ${tx.txid}\nAmount: ${formattedAmount} ${asset}`;
+    
+    document.getElementById('txInfo').textContent = txInfoText;
+
+
+    document.getElementById('receiptForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const note = document.getElementById('note').value;
+      const email = document.getElementById('email').value;
+      const submitBtn = document.getElementById('submitBtn');
+      
+      if (!email) {
+        alert('Please enter an email address');
+        return;
+      }
+
+
+      submitBtn.textContent = 'Sending...';
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      
+      try {
+        const result = await window.electronAPI.sendReceiptEmail({ 
+          tx: tx, 
+          note: note || '', 
+          email: email 
+        });
+        
+        if (result && result.success === false) {
+          alert('Error sending receipt: ' + result.error);
+        } else {
+          alert('Receipt sent successfully!');
+
+          document.getElementById('note').value = '';
+          document.getElementById('email').value = '';
+        }
+      } catch (error) {
+        console.error('Error sending receipt:', error);
+        alert('Error sending receipt: ' + error.message);
+      } finally {
+
+        submitBtn.textContent = 'Send Receipt';
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

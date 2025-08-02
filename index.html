@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Incoming TXs</title>
+  <style>
+    body {
+      background-color: #001f3f;
+      color: white;
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2em;
+      color: #7FDBFF;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      font-size: 1.5em;
+      margin-bottom: 30px;
+    }
+
+    ul#txList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+ul#txList li {
+  background-color: #0074D9;
+  color: white;
+  padding: 10px;
+  margin: 10px auto; 
+  border-radius: 8px;
+  width: 85%;
+}
+
+
+    ul#txList li:hover {
+      background-color: #3399FF;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">Ƶpay</div>
+  <h1>Incoming Transactions</h1>
+  <ul id="txList"></ul>
+  <script src="renderer.js"></script>
+</body>
+</html>
+
